@@ -43,7 +43,7 @@ expire=$(confirm "Should the key expire after 1 year?")
 if [ "$expire" = "0"  ]; then
 	expires_in=0
 else
-	expires_in=31622400
+	expires_in=365
 fi
 
 spec=$(mktemp)

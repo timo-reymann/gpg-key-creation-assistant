@@ -29,11 +29,12 @@ validate_passphrase() {
 passphrase=$(with_validate 'password "Please enter a passphrase for your GPG key, that will be required import/export the key"' validate_passphrase)
 
 # Key size in bit
-key_sizes=("8182 (high)" "4096 (low)")
-key_size=$(list "Select the bit amount of your key. The more bytes you choose the longer it takes for GPG to perform operations, but they will be more secure as well" "${key_sizes[@]}")
+key_sizes=("8182 (high)" "4096 (medium)" "2048 (low)")
+key_size=$(list "Bit size of your key, the more bytes you choose the longer it takes for GPG to perform operations, increasing security as well" "${key_sizes[@]}")
 case $key_size in
-	"0") bit_size=4096; ;;
-	"1") bit_size=8192; ;;
+	0) bit_size=8192; ;;
+	1) bit_size=4096; ;;
+	2) bit_size=2048; ;;
 esac
 
 # Expiration

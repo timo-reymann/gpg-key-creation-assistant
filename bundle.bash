@@ -102,6 +102,7 @@ list() {
 }
 checkbox() {
     _prompt_text "$1"
+    echo "" >&2
     local opts
                 opts=("${@:2}")
     local opts_count

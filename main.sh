@@ -4,6 +4,7 @@ source bundle.bash
 if ! command gpg --version > /dev/null
 then
 	show_error "No GPG installation found"
+	exit 2
 else
 	show_success "Found GPG $(gpg --version | head -n1)"
 fi

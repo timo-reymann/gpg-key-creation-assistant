@@ -49,7 +49,7 @@ cat >"$spec" <<EOF
      %echo Generating your GPG key
      Key-Type: RSA
      Key-Length: ${bit_size}
-     Subkey-Type: ELG-E
+     Subkey-Type: RSA
      Subkey-Length: ${bit_size}
      Name-Real: ${full_name}
      Name-Email: ${email}

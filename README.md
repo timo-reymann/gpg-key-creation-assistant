@@ -7,7 +7,6 @@ Plain shell assistant helping you setting up a new GPG key.
 ## Requirements
 - [gpg already installed](#How-to-install-GPG)
 - bash 4+
-- GNU coreutils
 
 ## Features
 - create new key

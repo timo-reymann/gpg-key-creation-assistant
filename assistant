@@ -258,10 +258,12 @@ log() {
 set -e
 if ! command gpg --version > /dev/null
 then
-	show_error "No GPG installation found"
+	show_error "No GPG installation found.\n\
+For more details on installation please check https://github.com/timo-reymann/gpg-key-creation-assistant/tree/main#how-to-install-gpg\
+After successfull installation you can run this script again."
 	exit 2
 else
-	show_success "Found GPG $(gpg --version | head -n1)"
+	show_success "Found GPG '$(gpg --version | head -n1)'"
 fi
 
 # Full name

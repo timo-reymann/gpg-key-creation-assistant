@@ -85,8 +85,12 @@ for line in $(gpg --list-secret-keys --with-colons --fingerprint "${email}"); do
     fi
 done
 
-key_for_export_id=$(list "There were multiple keys found, please choose the one you want to use" "${secret_keys_formatted[@]}")
-key_for_export=${secret_keys_raw[${key_for_export_id}]}
+if [[ ${#secret_keys_raw[@]} -gt 1 ]]; then
+    key_for_export_id=$(list "There were multiple keys found, please choose the one you want to use" "${secret_keys_formatted[@]}")
+    key_for_export=${secret_keys_raw[${key_for_export_id}]}
+else
+    key_for_export=${secret_keys_raw[0]}
+fi
 
 gpg --output public.pgp --armor --export "${key_for_export}"
 show_success "Exported public key to '${PWD}/public.gpg'"
@@ -105,6 +109,4 @@ To make sure that the git hosters you are using now about your gpg key check the
   - GitLab: https://docs.gitlab.com/ee/user/project/repository/gpg_signed_commits/#add-a-gpg-key-to-your-account
 EOF
 fi
-
-# TODO Bundle lib
 

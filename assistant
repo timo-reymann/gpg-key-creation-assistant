@@ -353,11 +353,15 @@ else
     key_for_export=${secret_keys_raw[0]}
 fi
 
-gpg --output public.pgp --armor --export "${key_for_export}"
-show_success "Exported public key to '${PWD}/public.gpg'"
+rm public.gpg || true >/dev/null
+gpg --output public.gpg --armor --export "${key_for_export}"
+show_success "Exported public key to '${PWD}/public.gpg'\n\
+You can savely share this key with the world."
 
-gpg --output private.pgp --armor --pinentry-mode loopback --passphrase "${passphrase}" --export-secret-key "${key_for_export}"
-show_success "Exported private key to '${PWD}/private.gpg'"
+rm private.gpg || true >/dev/null
+gpg --output private.gpg --armor --pinentry-mode loopback --passphrase "${passphrase}" --export-secret-key "${key_for_export}"
+show_success "Exported private key to '${PWD}/private.gpg'\n\
+Store it somewhere safe as a backup."
 
 setup_git=$(confirm "Do you want to set up git to sign your commits?")
 if [ "$setup_git" == "1" ]; then
@@ -368,6 +372,12 @@ if [ "$setup_git" == "1" ]; then
 To make sure that the git hosters you are using now about your gpg key check the according documentations:
   - GitHub: https://docs.github.com/en/authentication/managing-commit-signature-verification/adding-a-gpg-key-to-your-github-account
   - GitLab: https://docs.gitlab.com/ee/user/project/repository/gpg_signed_commits/#add-a-gpg-key-to-your-account
-EOF
-fi
 
+Public key to copy&paste:
+EOF
+	echo -en "\e[1b\e[37m\e[3m"
+	while read -r line; do
+		echo "${line}"
+	done < public.gpg
+	echo -en "\e[0m"
+fi

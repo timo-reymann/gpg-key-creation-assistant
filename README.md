@@ -18,6 +18,13 @@ Plain shell assistant helping you setting up a new GPG key.
         - GitLab
 
 ## Usage
+
+### ... with curl
+```bash
+bash <(curl -sS https://raw.githubusercontent.com/timo-reymann/gpg-key-creation-assistant/main/assistant)
+```
+
+### ... with wget
 ```bash
 bash <(wget -qO- https://raw.githubusercontent.com/timo-reymann/gpg-key-creation-assistant/main/assistant)
 ```

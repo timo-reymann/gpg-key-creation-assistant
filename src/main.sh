@@ -1,6 +1,4 @@
-#!/bin/bash
-source bundle.bash
-
+set -e
 if ! command gpg --version > /dev/null
 then
 	show_error "No GPG installation found"
@@ -60,13 +58,53 @@ cat >"$spec" <<EOF
      %commit
      %echo Key generated
 EOF
-gpg --batch --generate-key $spec
+gpg --batch --generate-key --no-tty -q $spec
 rm $spec
 
-# TODO Parse secret key list output and allow user selecting
-# TODO Allow to export secret key
-# TODO Allow to export public key
-# TODO Provide instructions with y/n question(s) for GitHub + GitLab
-# TODO Bundle lib
+# get private keys
+secret_keys_formatted=()
+secret_keys_raw=()
+for line in $(gpg --list-secret-keys --with-colons --fingerprint "${email}"); do
+    IFS=":" read -a fields <<<"$line"
 
+    # set fields required based on type
+    case ${fields[0]} in
+        sec)
+            key="${fields[4]}";
+            bits="${fields[2]}";
+            ;;
+        uid)
+            created="${fields[5]}";
+            ;;
+    esac
+
+    # ssb is the last entry per key we care about
+    if [[ "${key}" != "${fields[4]}" ]] && [[ "${fields[0]}" == "ssb" ]]; then
+        secret_keys_formatted+=("${key} (created on $(printf "%(%F %T)T" $created), ${bits} bit)")
+        secret_keys_raw+=("${key}")
+    fi
+done
+
+key_for_export_id=$(list "There were multiple keys found, please choose the one you want to use" "${secret_keys_formatted[@]}")
+key_for_export=${secret_keys_raw[${key_for_export_id}]}
+
+gpg --output public.pgp --armor --export "${key_for_export}"
+show_success "Exported public key to '${PWD}/public.gpg'"
+
+gpg --output private.pgp --armor --pinentry-mode loopback --passphrase "${passphrase}" --export-secret-key "${key_for_export}"
+show_success "Exported private key to '${PWD}/private.gpg'"
+
+setup_git=$(confirm "Do you want to set up git to sign your commits?")
+if [ "$setup_git" == "1" ]; then
+    git config --global user.signingkey "${key_for_export}"
+    git config --global commit.gpgsign true
+    show_success "Git is now set up to autosign your commits"
+    cat <<EOF
+To make sure that the git hosters you are using now about your gpg key check the according documentations:
+  - GitHub: https://docs.github.com/en/authentication/managing-commit-signature-verification/adding-a-gpg-key-to-your-github-account
+  - GitLab: https://docs.gitlab.com/ee/user/project/repository/gpg_signed_commits/#add-a-gpg-key-to-your-account
+EOF
+fi
+
+# TODO Bundle lib
 

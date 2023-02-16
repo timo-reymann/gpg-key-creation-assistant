@@ -1,4 +1,5 @@
 #!/bin/bash
+## START LIBRARY BUNDLE ##
 _get_cursor_row() {
     local IFS=';'
     read -sdR -p $'\E[6n' ROW COL
@@ -255,6 +256,7 @@ log() {
     esac
     echo -e "[${color}$(printf '%-5s' "${level}")\e[0m] \e[1;35m$(date +'%Y-%m-%dT%H:%M:%S')\e[0m ${message}"
 }
+## STOP LIBRARY BUNDLE ##
 set -e
 if ! command gpg --version > /dev/null
 then

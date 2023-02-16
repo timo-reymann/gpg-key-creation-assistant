@@ -6,6 +6,8 @@ help: ## Display this help page
 
 build: ## Build script
 	@echo "#!/bin/bash" > assistant
+	@echo "## START LIBRARY BUNDLE ##" >> assistant
 	@cat src/bundle.bash >> assistant
+	@echo "## STOP LIBRARY BUNDLE ##" >> assistant
 	@cat src/main.sh >> assistant
 

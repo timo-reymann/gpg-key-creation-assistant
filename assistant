@@ -381,13 +381,13 @@ for line in $(gpg --list-secret-keys --with-colons --fingerprint "${email}"); do
             bits="${fields[2]}";
             ;;
         uid)
-            created_hours="$(((${fields[5]} - $(date +%s) / 360)))";
+            created_minutes="$(( (${fields[5]} - 1676627273) / 60 ))";
             ;;
     esac
 
     # ssb is the last entry per key we care about
     if [[ "${key}" != "${fields[4]}" ]] && [[ "${fields[0]}" == "ssb" ]]; then
-        secret_keys_formatted+=("${key} (created $created_hours hours ago), ${bits} bit)")
+        secret_keys_formatted+=("${key} (created $created_minutes minutes ago), ${bits} bit)")
         secret_keys_raw+=("${key}")
     fi
 done

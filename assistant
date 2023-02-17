@@ -380,4 +380,10 @@ EOF
 		echo "${line}"
 	done < public.gpg
 	echo -en "\e[0m"
+
+    if command -v gh --version >/dev/null; then
+        show_success "GitHub CLI found, trying to publish key to GitHub"
+        gh gpg-key add public.gpg || show_error "Failed to publish key, you can try to add it manually. Follow the doc link above to do that."
+    fi
 fi
+

@@ -13,7 +13,8 @@ Plain shell assistant helping you setting up a new GPG key.
 - export private and public key
 - set up git
    - local config
-   - provide instructions for
+   - in case gh cli is installed, try to publish gpg key
+   - provide instructions to add key to
         - GitHub
         - GitLab
 

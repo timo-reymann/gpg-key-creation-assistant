@@ -330,7 +330,7 @@ email=$(with_validate 'input "E-Mail address that the key will be associated wit
 
 # Passphrase
 validate_passphrase() {
-    if [ "${#1}" -lt 8 ]; then echo "Passphrase needs to be at least 5 characters"; return 1; fi
+    if [ "${#1}" -lt 8 ]; then echo "Passphrase needs to be at least 8 characters"; return 1; fi
 }
 passphrase=$(with_validate 'password "Please enter a passphrase for your GPG key, that will be required import/export the key"' validate_passphrase)
 
@@ -381,15 +381,16 @@ for line in $(gpg --list-secret-keys --with-colons --fingerprint "${email}"); do
             bits="${fields[2]}";
             ;;
         uid)
-            created_minutes="$((($(date +%s) - ${fields[5]}) / 60 ))";
+	        created_minutes="$((($(date +%s) - ${fields[5]}) / 60 ))";
             ;;
     esac
 
     # ssb is the last entry per key we care about
-    if [[ "${key}" != "${fields[4]}" ]] && [[ "${fields[0]}" == "ssb" ]]; then
+    if [[ "${key}" != "${fields[4]}" ]] && [[ "${fields[0]}" == "ssb" ]] && [[ $created_minutes -lt 1 ]]; then
         secret_keys_formatted+=("${key} (created $created_minutes minutes ago), ${bits} bit)")
         secret_keys_raw+=("${key}")
     fi
+	
 done
 
 if [[ ${#secret_keys_raw[@]} -gt 1 ]]; then
@@ -401,12 +402,12 @@ fi
 
 show_success "Key to be set up: ${key_for_export}"
 
-rm public.gpg || true >/dev/null
+rm public.gpg 2>/dev/null || true
 gpg --output public.gpg --armor --export "${key_for_export}"
 show_success "Exported public key to '${PWD}/public.gpg'\n\
 You can savely share this key with the world."
 
-rm private.gpg || true >/dev/null
+rm private.gpg 2>/dev/null || true
 gpg --output private.gpg --armor --pinentry-mode loopback --passphrase "${passphrase}" --export-secret-key "${key_for_export}"
 show_success "Exported private key to '${PWD}/private.gpg'\n\
 Store it somewhere safe as a backup."

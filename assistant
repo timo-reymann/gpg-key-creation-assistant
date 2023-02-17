@@ -381,7 +381,7 @@ for line in $(gpg --list-secret-keys --with-colons --fingerprint "${email}"); do
             bits="${fields[2]}";
             ;;
         uid)
-            created_minutes="$(( (${fields[5]} - 1676627273) / 60 ))";
+            created_minutes="$((($(date +%s) - ${fields[5]}) / 60 ))";
             ;;
     esac
 

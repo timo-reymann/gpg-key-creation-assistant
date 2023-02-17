@@ -94,6 +94,8 @@ else
     key_for_export=${secret_keys_raw[0]}
 fi
 
+show_success "Key to be set up: ${key_for_export}"
+
 rm public.gpg || true >/dev/null
 gpg --output public.gpg --armor --export "${key_for_export}"
 show_success "Exported public key to '${PWD}/public.gpg'\n\

@@ -1,7 +1,11 @@
 gpg-key-creation-assistant
 ===
 
-Plain shell assistant helping you setting up a new GPG key.
+<p align="center">
+	<img width="300" src="./.github/images/logo.png">
+    <br />
+    Plain shell assistant helping you setting up a new GPG key.
+</p>
 
 ## Requirements
 - [gpg already installed](#How-to-install-GPG)

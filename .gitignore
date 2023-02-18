@@ -1,2 +1,2 @@
-private.gpg
-public.gpg
+*.gpg
+.idea/

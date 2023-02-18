@@ -1,4 +1,4 @@
-gpg-key-creation-assistant
+GPG Key Creation Assistant
 ===
 [![LICENSE](https://img.shields.io/github/license/timo-reymann/gpg-key-creation-assistant)](https://github.com/timo-reymann/gpg-key-creation-assistant/blob/main/LICENSE)
 

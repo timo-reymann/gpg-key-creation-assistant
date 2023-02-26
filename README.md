@@ -9,6 +9,8 @@ GPG Key Creation Assistant
     Plain shell assistant helping you setting up a new GPG key.
 </p>
 
+![Demo](./.github/images/demo.gif)
+
 ## Features
 
 - create new key

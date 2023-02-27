@@ -405,7 +405,7 @@ show_success "Key to be set up: ${key_for_export}"
 rm public.gpg 2>/dev/null || true
 gpg --output public.gpg --armor --export "${key_for_export}"
 show_success "Exported public key to '${PWD}/public.gpg'\n\
-You can savely share this key with the world."
+You can safely share this key with the world."
 
 rm private.gpg 2>/dev/null || true
 gpg --output private.gpg --armor --pinentry-mode loopback --passphrase "${passphrase}" --export-secret-key "${key_for_export}"
